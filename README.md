@@ -2,8 +2,8 @@
 # n8n-nodes-qualifire-model
 
 **Qualifire OpenAI‑Compatible Model** for n8n Agents. This node injects the required
-`X-Qualifire-Api-Key` header and uses the Qualifire OpenAI‑compatible base URL
-(no `/v1`), so you can connect it directly to the **Agent → Chat Model** input.
+`X-Qualifire-Api-Key` header and uses the Qualifire OpenAI‑compatible base URL, 
+so you can connect it directly to the **Agent → Chat Model** input.
 
 > Base URL used by default:
 >
