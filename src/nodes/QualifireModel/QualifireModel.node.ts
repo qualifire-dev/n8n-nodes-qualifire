@@ -1,11 +1,11 @@
 import { ChatOpenAI } from '@langchain/openai';
 import {
-  NodeConnectionType,
   type INodeType,
   type INodeTypeDescription,
   type ISupplyDataFunctions,
   type SupplyData,
 } from 'n8n-workflow';
+
 
 export class QualifireModel implements INodeType {
   description: INodeTypeDescription = {
@@ -18,7 +18,7 @@ export class QualifireModel implements INodeType {
     defaults: { name: 'Qualifire Chat Model' },
 
     inputs: [],
-    outputs: [NodeConnectionType.AiLanguageModel], // <-- key change
+    outputs: ['ai_languageModel'],
     outputNames: ['Model'],
 
     credentials: [

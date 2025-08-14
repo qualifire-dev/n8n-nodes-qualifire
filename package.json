@@ -27,7 +27,7 @@
     "node": ">=18.0.0"
   },
   "peerDependencies": {
-    "n8n-core": ">=1.40.0",
+    "n8n-core": "^1.14.1",
     "n8n-workflow": ">=1.40.0"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "@types/nock": "^11.1.0",
     "@types/node": "^20.19.10",
     "@types/ssh2": "^1.15.5",
-    "n8n-workflow": "^1.82.0",
+    "n8n-workflow": "^1.17.0",
     "typescript": "^5.9.2"
   },
   "dependencies": {
