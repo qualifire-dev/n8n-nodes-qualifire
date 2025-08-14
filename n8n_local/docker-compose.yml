@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n-local
+    ports:
+      - "5678:5678"
+    environment:
+      # Basic local hardening (change these for your machine)
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
+      # Encrypt credentials at rest
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      # Allow env var usage in expressions like {{$env.VAR}}
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      # Timezone
+      - TZ=${TZ}
+      # Pass your keys into the container for easy reference
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - QUALIFIRE_API_KEY=${QUALIFIRE_API_KEY}
+      - N8N_CUSTOM_EXTENSIONS=/extensions
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./extensions:/extensions
+volumes:
+  n8n_data:

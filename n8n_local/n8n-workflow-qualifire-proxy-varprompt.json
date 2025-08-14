@@ -1,0 +1,77 @@
+{
+  "name": "Qualifire Proxy \u2014 Chat Completions (prompt as variable)",
+  "nodes": [
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "prompt",
+              "value": "Say hello from n8n via Qualifire."
+            }
+          ]
+        }
+      },
+      "id": "Set Prompt",
+      "name": "Set Prompt",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        380,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://proxy.qualifire.ai/api/providers/openai/chat/completions",
+        "jsonParameters": true,
+        "options": {},
+        "sendHeaders": true,
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.OPENAI_API_KEY }}"
+            },
+            {
+              "name": "X-Qualifire-Api-Key",
+              "value": "={{ $env.QUALIFIRE_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "bodyParametersJson": "={{ { \"model\": \"gpt-4o-mini\", \"messages\": [ { \"role\": \"user\", \"content\": $json.prompt } ] } }}"
+      },
+      "id": "HTTP Request",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        700,
+        320
+      ]
+    }
+  ],
+  "connections": {
+    "Set Prompt": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
