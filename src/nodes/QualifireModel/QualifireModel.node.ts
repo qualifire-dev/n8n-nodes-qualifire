@@ -22,8 +22,7 @@ export class QualifireModel implements INodeType {
     outputNames: ['Model'],
 
     credentials: [
-      { name: 'openAiApiForQualifire', required: true },
-      { name: 'qualifireApi', required: true },
+      { name: 'qualifireOpenAi', required: false },
     ],
 
     properties: [
@@ -60,6 +59,7 @@ export class QualifireModel implements INodeType {
     const baseUrl = this.getNodeParameter('baseUrl', 0) as string;
     const model = this.getNodeParameter('model', 0) as string;
     const temperature = this.getNodeParameter('temperature', 0) as number;
+ 
     const useEnvKeys = this.getNodeParameter('useEnvKeys', 0) as boolean;
 
     let openAiKey = '';
@@ -69,16 +69,15 @@ export class QualifireModel implements INodeType {
       openAiKey = process.env.OPENAI_API_KEY || '';
       qualifireKey = process.env.QUALIFIRE_API_KEY || '';
     } else {
-      const openCreds = await this.getCredentials('openAiApiForQualifire');
-      const qCreds = await this.getCredentials('qualifireApi');
-      openAiKey = (openCreds?.apiKey as string) || '';
-      qualifireKey = (qCreds?.apiKey as string) || '';
+      const creds = await this.getCredentials('qualifireOpenAi').catch(() => null);
+      openAiKey = (creds?.openAiApiKey as string) || '';
+      qualifireKey = (creds?.qualifireApiKey as string) || '';
     }
 
-    if (!openAiKey) throw new Error('Missing OpenAI API key.');
-    if (!qualifireKey) throw new Error('Missing Qualifire API key.');
-
-    // LangChain chat model configured to hit Qualifire’s base and inject the header
+    if (!openAiKey || !qualifireKey) {
+      throw new Error('Provide keys via env (OPENAI_API_KEY, QUALIFIRE_API_KEY) or select the bundled credential.');
+    }
+   // LangChain chat model configured to hit Qualifire’s base and inject the header
     const chat = new ChatOpenAI({
       model,
       temperature,
